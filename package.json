@@ -1,0 +1,27 @@
+{
+  "name": "invoice-calc-engine",
+  "version": "0.1.0",
+  "description": "Moteur de génération de factures à champs calculés : parseur de formules, graphe de dépendances, détection de cycles, tri topologique et recalcul incrémental. Développé en TypeScript.",
+  "type": "module",
+  "main": "dist/engine/index.js",
+  "types": "dist/engine/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ricardofrcn/invoice-calc-engine.git"
+  },
+  "keywords": ["typescript", "dependency-graph", "topological-sort", "formula-parser", "invoice"],
+  "author": "Ricardo Forcina",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ricardofrcn/invoice-calc-engine/issues"
+  },
+  "homepage": "https://github.com/ricardofrcn/invoice-calc-engine#readme",
+  "devDependencies": {
+    "@types/node": "^22.20.3",
+    "typescript": "^7.0.2"
+  }
+}
