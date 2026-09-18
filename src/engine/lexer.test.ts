@@ -24,4 +24,23 @@ describe("tokenize", () => {
     expect(first?.position).toBe(0);
     expect(second?.position).toBe(3);
   });
-  
+
+  it("termine toujours par un token eof", () => {
+    expect(tokenize("")).toEqual([{ type: "eof", value: "", position: 0 }]);
+  });
+
+  it("refuse un caractère invalide en donnant sa position", () => {
+    try {
+      tokenize("HT # 2");
+      expect.unreachable("aurait dû lever une erreur");
+    } catch (error) {
+      expect(error).toBeInstanceOf(FormulaError);
+      expect((error as FormulaError).position).toBe(3);
+      expect((error as FormulaError).format()).toContain("^");
+    }
+  });
+
+  it("refuse un nombre décimal incomplet", () => {
+    expect(() => tokenize("1. + 2")).toThrow(FormulaError);
+  });
+});
