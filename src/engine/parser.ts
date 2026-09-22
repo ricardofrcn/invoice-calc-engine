@@ -71,7 +71,8 @@ export function parse(formula: string): AstNode {
       return inner;
     }
 
-    const what = token.type === "eof" ? "Fin de formule inattendue" : `Jeton inattendu « ${token.value} »`;
+    const what =
+      token.type === "eof" ? "Fin de formule inattendue" : `Jeton inattendu « ${token.value} »`;
     throw new FormulaError(what, token.position, formula);
   };
 
