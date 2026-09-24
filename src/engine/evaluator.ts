@@ -6,7 +6,6 @@ import { parse } from "./parser.js";
 import { topologicalOrder } from "./topology.js";
 import { isComputed, type InvoiceDocument } from "./types.js";
 
-
 export class Engine {
   readonly graph: DependencyGraph;
   readonly order: readonly string[];
@@ -48,6 +47,31 @@ export class Engine {
 
   snapshot(): Map<string, number> {
     return new Map(this.values);
+  }
+
+  setSource(name: string, value: number): string[] {
+    const field = this.document.fields.find((f) => f.name === name);
+    if (field === undefined || isComputed(field)) {
+      throw new DocumentError(`« ${name} » n'est pas un champ source`, [name]);
+    }
+
+    this.values.set(name, value);
+
+    const impacted = new Set<string>();
+    const queue = [name];
+    while (queue.length > 0) {
+      for (const dependent of this.graph.dependents.get(queue.shift()!) ?? []) {
+        if (!impacted.has(dependent)) {
+          impacted.add(dependent);
+          queue.push(dependent);
+        }
+      }
+    }
+
+    this.evaluations = 0;
+    const recomputed = this.order.filter((candidate) => impacted.has(candidate));
+    for (const candidate of recomputed) this.compute(candidate);
+    return recomputed;
   }
 
   private compute(name: string): void {
