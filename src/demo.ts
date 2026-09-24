@@ -1,46 +1,60 @@
-import type { AstNode } from "./engine/ast.js";
-import { collectDependencies } from "./engine/dependencies.js";
-import { FormulaError } from "./engine/errors.js";
-import { tokenize } from "./engine/lexer.js";
-import { parse } from "./engine/parser.js";
+import { writeFileSync } from "node:fs";
+import { DocumentError } from "./engine/errors.js";
+import { Engine } from "./engine/evaluator.js";
+import { formatMoney } from "./engine/money.js";
+import { isComputed } from "./engine/types.js";
+import { courseVtc, factureCyclique } from "./invoice.js";
+import { renderInvoice } from "./render.js";
 
-function printTree(node: AstNode, indent = ""): void {
-  switch (node.type) {
-    case "number":
-      console.log(`${indent}${node.value}`);
-      break;
-    case "field":
-      console.log(`${indent}[${node.name}]`);
-      break;
-    case "unary":
-      console.log(`${indent}${node.operator} (négation)`);
-      printTree(node.operand, indent + "  ");
-      break;
-    case "binary":
-      console.log(`${indent}${node.operator}`);
-      printTree(node.left, indent + "  ");
-      printTree(node.right, indent + "  ");
-      break;
+const commande = process.argv[2] ?? "facture";
+
+function afficherGraphe(engine: Engine): void {
+  console.log("\nGraphe de dépendances :");
+  for (const field of engine.document.fields) {
+    if (!isComputed(field)) continue;
+    const deps = [...(engine.graph.dependencies.get(field.name) ?? [])];
+    console.log(`  ${field.name.padEnd(18)} <- ${deps.join(", ")}`);
+  }
+  console.log(`\nOrdre de calcul :\n  ${engine.order.join(" → ")}`);
+}
+
+function afficherValeurs(engine: Engine): void {
+  console.log("\nValeurs :");
+  for (const field of engine.document.fields) {
+    const valeur = engine.get(field.name);
+    const affichage =
+      Number.isInteger(valeur) && Math.abs(valeur) > 1 ? formatMoney(valeur) : String(valeur);
+    console.log(`  ${field.name.padEnd(18)} ${affichage.padStart(12)}`);
   }
 }
 
-const formula = process.argv[2] ?? "HT * (1 + TVA) - remise";
-
 try {
-  console.log(`Formule : ${formula}\n`);
+  if (commande === "cycle") {
+    console.log("Chargement d'une facture volontairement cassée...\n");
+    new Engine(factureCyclique);
+    console.log("Aucun cycle détecté (ce n'était pas prévu).");
+  } else if (commande === "set") {
+    const [name, raw] = (process.argv[3] ?? "distance=30").split("=");
+    const engine = new Engine(courseVtc);
+    console.log(`TTC initial : ${formatMoney(engine.get("TTC"))}`);
+    console.log(`Calcul complet : ${engine.evaluations} champs évalués\n`);
 
-  const tokens = tokenize(formula).filter((t) => t.type !== "eof");
-  console.log("Tokens :");
-  console.log("  " + tokens.map((t) => `${t.type}(${t.value})`).join("  "));
+    const recalcules = engine.setSource(name!, Number(raw));
+    console.log(`Modification : ${name} = ${raw}`);
+    console.log(`  Recalculés : ${recalcules.join(", ")} (${engine.evaluations} champs)`);
+    console.log(`  Nouveau TTC : ${formatMoney(engine.get("TTC"))}`);
+  } else {
+    const engine = new Engine(courseVtc);
+    console.log(`Document : ${engine.document.title}`);
+    afficherGraphe(engine);
+    afficherValeurs(engine);
 
-  console.log("\nArbre syntaxique :");
-  printTree(parse(formula), "  ");
-
-  const deps = [...collectDependencies(parse(formula))];
-  console.log(`\nDépendances : ${deps.length > 0 ? deps.join(", ") : "aucune"}`);
+    writeFileSync("facture.html", renderInvoice(engine), "utf8");
+    console.log("\nFacture écrite dans facture.html (ouvre-la et fais Ctrl+P pour le PDF).");
+  }
 } catch (error) {
-  if (error instanceof FormulaError) {
-    console.error(`Erreur de formule : ${error.format()}`);
+  if (error instanceof DocumentError) {
+    console.error(`\nErreur : ${error.message}`);
     process.exit(1);
   }
   throw error;
