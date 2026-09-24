@@ -18,12 +18,13 @@ function afficherGraphe(engine: Engine): void {
   console.log(`\nOrdre de calcul :\n  ${engine.order.join(" → ")}`);
 }
 
+const NON_MONETAIRES = new Set(["distance", "majoration_nuit", "TVA"]);
+
 function afficherValeurs(engine: Engine): void {
   console.log("\nValeurs :");
   for (const field of engine.document.fields) {
     const valeur = engine.get(field.name);
-    const affichage =
-      Number.isInteger(valeur) && Math.abs(valeur) > 1 ? formatMoney(valeur) : String(valeur);
+    const affichage = NON_MONETAIRES.has(field.name) ? String(valeur) : formatMoney(valeur);
     console.log(`  ${field.name.padEnd(18)} ${affichage.padStart(12)}`);
   }
 }
