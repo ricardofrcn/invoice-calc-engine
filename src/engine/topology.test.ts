@@ -6,9 +6,7 @@ import { computed, source, type Field, type InvoiceDocument } from "./types.js";
 function ordreValide(graph: DependencyGraph, order: readonly string[]): boolean {
   const rang = new Map(order.map((name, index) => [name, index]));
   return order.every((name) =>
-    [...(graph.dependencies.get(name) ?? [])].every(
-      (dep) => rang.get(dep)! < rang.get(name)!,
-    ),
+    [...(graph.dependencies.get(name) ?? [])].every((dep) => rang.get(dep)! < rang.get(name)!),
   );
 }
 

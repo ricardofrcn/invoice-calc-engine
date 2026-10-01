@@ -1,0 +1,14 @@
+{
+  "title": "Devis plomberie",
+  "fields": [
+    { "name": "taux_horaire", "value": 4500 },
+    { "name": "heures", "value": 3 },
+    { "name": "materiel", "value": 12000 },
+    { "name": "deplacement", "value": 3500 },
+    { "name": "TVA", "value": 0.2 },
+    { "name": "main_oeuvre", "formula": "taux_horaire * heures" },
+    { "name": "HT", "formula": "main_oeuvre + materiel + deplacement" },
+    { "name": "montant_TVA", "formula": "HT * TVA" },
+    { "name": "TTC", "formula": "HT + montant_TVA" }
+  ]
+}

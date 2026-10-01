@@ -1,0 +1,16 @@
+{
+  "title": "Course VTC Nice - Monaco",
+  "fields": [
+    { "name": "prix_km", "value": 250 },
+    { "name": "distance", "value": 22 },
+    { "name": "majoration_nuit", "value": 0.2 },
+    { "name": "frais_reservation", "value": 300 },
+    { "name": "remise", "value": 500 },
+    { "name": "TVA", "value": 0.1 },
+    { "name": "base_HT", "formula": "prix_km * distance" },
+    { "name": "majoration", "formula": "base_HT * majoration_nuit" },
+    { "name": "HT", "formula": "base_HT + majoration + frais_reservation - remise" },
+    { "name": "montant_TVA", "formula": "HT * TVA" },
+    { "name": "TTC", "formula": "HT + montant_TVA" }
+  ]
+}
