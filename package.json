@@ -14,7 +14,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "demo": "tsx src/demo.ts",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "bench": "tsx src/bench/run.ts"
   },
   "repository": {
     "type": "git",
