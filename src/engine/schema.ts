@@ -38,7 +38,6 @@ function parseField(raw: unknown, index: number): Field {
   throw new DocumentError(`${where} doit avoir « value » ou « formula »`);
 }
 
-/** Convertit du JSON déjà analysé en document validé. */
 export function parseDocument(raw: unknown): InvoiceDocument {
   const object = asObject(raw, "Le document");
   if (!Array.isArray(object.fields)) {
