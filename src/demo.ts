@@ -5,6 +5,7 @@ import { loadDocument } from "./engine/load.js";
 import { formatMoney } from "./engine/money.js";
 import { isComputed } from "./engine/types.js";
 import { courseVtc, factureCyclique } from "./invoice.js";
+import { renderPdf } from "./pdf/invoice.js";
 import { renderInvoice } from "./render.js";
 
 const commande = process.argv[2] ?? "facture";
@@ -67,20 +68,24 @@ function demoFacture(): void {
   console.log("\nFacture écrite dans facture.html (ouvre-la et fais Ctrl+P pour le PDF).");
 }
 
-try {
-  if (commande === "cycle") {
-    demoCycle();
-  } else if (commande === "set") {
-    demoSet();
-  } else if (commande === "json") {
-    demoJson();
-  } else {
-    demoFacture();
-  }
-} catch (error) {
+async function demoPdf(): Promise<void> {
+  const engine = new Engine(courseVtc);
+  writeFileSync("facture.pdf", await renderPdf(engine));
+  console.log(`Facture écrite dans facture.pdf (TTC : ${formatMoney(engine.get("TTC"))}).`);
+}
+
+async function main(): Promise<void> {
+  if (commande === "cycle") demoCycle();
+  else if (commande === "set") demoSet();
+  else if (commande === "json") demoJson();
+  else if (commande === "pdf") await demoPdf();
+  else demoFacture();
+}
+
+main().catch((error: unknown) => {
   if (error instanceof DocumentError) {
     console.error(`\nErreur : ${error.message}`);
     process.exit(1);
   }
   throw error;
-}
+});

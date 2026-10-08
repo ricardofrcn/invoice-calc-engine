@@ -12,3 +12,8 @@ facture.html
 .DS_Store
 .vscode/
 *.log
+
+public/app.js
+facture.pdfpublic/app.js
+public/*.json
+facture.pdf
