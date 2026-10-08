@@ -3,7 +3,6 @@ import { DocumentError } from "./errors.js";
 import { parseDocument } from "./schema.js";
 import type { InvoiceDocument } from "./types.js";
 
-/** Lit un document depuis un fichier JSON et le valide. */
 export function loadDocument(path: string): InvoiceDocument {
   let text: string;
   try {
