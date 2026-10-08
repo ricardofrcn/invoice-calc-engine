@@ -1,8 +1,3 @@
-/**
- * Point d'entree de la page. Il branche les evenements du navigateur sur le
- * moteur et ne contient aucune regle de calcul : charger un document, pousser
- * une valeur source, afficher ce que le moteur renvoie, exporter le PDF.
- */
 import { Engine } from "../engine/evaluator.js";
 import { DocumentError } from "../engine/errors.js";
 import { parseDocument } from "../engine/schema.js";
