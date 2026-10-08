@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Moteur de facturation</title>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/invoice.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Moteur de facturation</h1>
+      <div class="barre">
+        <select id="document-choice">
+          <option value="course-vtc.json">Course VTC</option>
+          <option value="devis-plomberie.json">Devis plomberie</option>
+          <option value="facture-cyclique.json">Facture cyclique</option>
+        </select>
+      </div>
+    </header>
+
+    <p id="error" hidden></p>
+
+    <main>
+      <section>
+        <h2>Donnees saisies</h2>
+        <div id="sources"></div>
+      </section>
+      <section>
+        <h2>Champs calcules</h2>
+        <div id="computed"></div>
+      </section>
+    </main>
+
+    <p id="status"></p>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

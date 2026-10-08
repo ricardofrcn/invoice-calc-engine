@@ -1,0 +1,51 @@
+.ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0.4rem;
+  border-bottom: 1px solid var(--trait);
+  border-radius: 4px;
+  transition: background-color 0.7s ease;
+}
+
+.ligne label {
+  font-size: 0.9rem;
+  color: var(--sourdine);
+}
+
+.ligne input {
+  width: 7rem;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid var(--trait);
+  border-radius: 4px;
+  font: inherit;
+  text-align: right;
+}
+
+.valeur {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.recalcule {
+  background: var(--halo);
+  transition: none;
+}
+
+#error {
+  padding: 0.8rem 1rem;
+  margin-top: 1.5rem;
+  border-left: 3px solid #d64545;
+  background: #fdf0f0;
+  color: #9b2c2c;
+  font-size: 0.9rem;
+}
+
+#status {
+  margin-top: 2.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--trait);
+  font-size: 0.85rem;
+  color: var(--sourdine);
+}

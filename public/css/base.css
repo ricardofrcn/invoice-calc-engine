@@ -1,0 +1,79 @@
+:root {
+  --encre: #15171c;
+  --sourdine: #6b7280;
+  --trait: #e3e5ea;
+  --accent: #2f6df6;
+  --halo: #fff4d6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  max-width: 52rem;
+  color: var(--encre);
+  font-family: system-ui, sans-serif;
+}
+
+header {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--trait);
+}
+
+h1 {
+  margin: 0 0 1rem;
+  font-size: 1.35rem;
+}
+
+h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sourdine);
+}
+
+.barre {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+select,
+button {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--trait);
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+button {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+button:disabled {
+  border-color: var(--trait);
+  background: var(--trait);
+  color: var(--sourdine);
+  cursor: not-allowed;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+main section {
+  flex: 1 1 18rem;
+}
