@@ -1,9 +1,0 @@
-{
-  "title": "Facture cyclique",
-  "fields": [
-    { "name": "prix_km", "value": 250 },
-    { "name": "HT", "formula": "prix_km + remise" },
-    { "name": "remise", "formula": "TTC * 0.1" },
-    { "name": "TTC", "formula": "HT * 1.1" }
-  ]
-}
