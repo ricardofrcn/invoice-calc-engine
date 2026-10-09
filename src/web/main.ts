@@ -38,7 +38,6 @@ function onSaisie(event: Event): void {
   }
 }
 
-/** Le PDF est fabrique dans le navigateur, puis remis au visiteur comme un telechargement. */
 async function telechargerPdf(): Promise<void> {
   if (!engine) return;
   const octets = new Uint8Array(await renderPdf(engine));
